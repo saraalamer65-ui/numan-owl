@@ -124,6 +124,88 @@
         <button id="sleepBtn" class="btn btn-ghost" type="button">نوّمه</button>
       </div>
     </section>
+
+    <section class="card" aria-labelledby="addTitle">
+      <h2 id="addTitle" class="section-title">مهمة جديدة</h2>
+      <form id="addForm" class="add-form" novalidate autocomplete="off">
+        <div class="add-row">
+          <label class="sr-only" for="taskTitle">عنوان المهمة</label>
+          <input id="taskTitle" class="input" type="text" maxlength="120" placeholder="وش عندك تسويه؟" enterkeyhint="done">
+          <button class="btn btn-primary" type="submit">أضف</button>
+        </div>
+        <p id="addError" class="form-error" role="alert" hidden></p>
+
+        <div class="add-meta">
+          <label class="field" for="taskCategory">
+            <span class="field-label">الفئة</span>
+            <select id="taskCategory" class="input">
+              <option value="scripts">سكريبتات</option>
+              <option value="design">تصميم</option>
+              <option value="store">المتجر</option>
+              <option value="comms">تواصل</option>
+              <option value="other">أخرى</option>
+            </select>
+          </label>
+          <div class="field">
+            <label class="field-label" for="taskDue">الموعد</label>
+            <input id="taskDue" class="input" type="date">
+            <div class="quick-dates" role="group" aria-label="مواعيد سريعة">
+              <button type="button" class="chip-btn" data-due="today">اليوم</button>
+              <button type="button" class="chip-btn" data-due="tomorrow">بكرة</button>
+              <button type="button" class="chip-btn" data-due="none">بدون موعد</button>
+            </div>
+          </div>
+        </div>
+
+        <fieldset class="field prio-field">
+          <legend class="field-label">الأولوية</legend>
+          <div class="segmented">
+            <input type="radio" name="priority" id="prioUrgent" value="urgent">
+            <label for="prioUrgent">عاجلة</label>
+            <input type="radio" name="priority" id="prioNormal" value="normal" checked>
+            <label for="prioNormal">عادية</label>
+            <input type="radio" name="priority" id="prioLight" value="light">
+            <label for="prioLight">خفيفة</label>
+          </div>
+        </fieldset>
+      </form>
+    </section>
+
+    <section class="card" aria-label="المهام">
+      <div class="tabs" role="tablist" aria-label="عرض المهام">
+        <button id="tab-today" class="tab" type="button" role="tab" data-tab="today" aria-selected="true" aria-controls="taskPanel">
+          اليوم <span class="count" id="count-today">0</span>
+        </button>
+        <button id="tab-upcoming" class="tab" type="button" role="tab" data-tab="upcoming" aria-selected="false" aria-controls="taskPanel" tabindex="-1">
+          القادمة <span class="count" id="count-upcoming">0</span>
+        </button>
+        <button id="tab-done" class="tab" type="button" role="tab" data-tab="done" aria-selected="false" aria-controls="taskPanel" tabindex="-1">
+          المنجزة <span class="count" id="count-done">0</span>
+        </button>
+      </div>
+      <div id="taskPanel" class="task-panel" role="tabpanel" aria-labelledby="tab-today">
+        <ul id="taskList" class="task-list"></ul>
+        <p id="emptyState" class="empty" hidden></p>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="dataTitle">
+      <h2 id="dataTitle" class="section-title">بياناتك</h2>
+      <p class="muted">كل شي محفوظ في هذا المتصفح بس. صدّر نسخة احتياطية بين فترة وفترة.</p>
+      <div class="data-actions">
+        <button id="exportBtn" class="btn btn-ghost" type="button">تصدير</button>
+        <button id="importBtn" class="btn btn-ghost" type="button">استيراد</button>
+        <input id="importFile" type="file" accept=".json,application/json" hidden>
+      </div>
+      <div id="importConfirm" class="confirm" hidden>
+        <p id="importConfirmText"></p>
+        <div class="data-actions">
+          <button id="importYes" class="btn btn-danger" type="button">استبدل بياناتي</button>
+          <button id="importNo" class="btn btn-ghost" type="button">إلغاء</button>
+        </div>
+      </div>
+      <p id="dataStatus" class="status" role="status"></p>
+    </section>
   </div>
 
   <script src="app.js"></script>
