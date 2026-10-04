@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>نومان</title>
+  <meta name="description" content="نومان: لوحة متابعة مهام مع بومة لطيفة تصحى وتشجعك">
+  <meta name="theme-color" content="#0b0536">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <h1>نومان</h1>
+        <p class="tagline">بومتك اللي تتابع مهامك</p>
+      </div>
+      <div class="top-actions">
+        <div class="stats">
+          <span class="stat" id="pointsStat">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7Z"/></svg>
+            <b id="pointsValue">0</b><span class="stat-label">نقطة</span>
+          </span>
+          <span class="stat" id="streakStat">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5c.6 3.2 4.8 5.6 4.8 10.4A4.8 4.8 0 0 1 7.2 13c0-2 1-3.4 2.2-4.4.1 1.6.8 2.6 1.8 3.1C11.1 8.6 10.6 5.6 12 2.5Z"/></svg>
+            <b id="streakValue">0</b><span class="stat-label" id="streakLabel">يوم</span>
+          </span>
+        </div>
+        <button id="themeBtn" class="icon-btn" type="button" aria-label="تبديل المظهر">
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="stage" aria-label="نومان البومة">
+      <button id="owlBtn" class="owl-btn" type="button" data-state="sleeping" aria-label="نومان نايم، اضغط عشان يصحى">
+        <svg class="owl" viewBox="0 0 200 210" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="gBody" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#7b2ff7"/>
+              <stop offset="1" stop-color="#ff4fd0"/>
+            </linearGradient>
+            <linearGradient id="gWing" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5f1fd6"/>
+              <stop offset="1" stop-color="#d23bc8"/>
+            </linearGradient>
+            <linearGradient id="gCap" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2a1a86"/>
+              <stop offset="1" stop-color="#4b2cc0"/>
+            </linearGradient>
+          </defs>
+
+          <g class="branch">
+            <path d="M6 197 Q100 186 194 199" fill="none" stroke="#8a5a3c" stroke-width="9" stroke-linecap="round"/>
+            <ellipse cx="172" cy="188" rx="10" ry="5" fill="#5fbf8f" transform="rotate(-25 172 188)"/>
+          </g>
+
+          <g class="owl-body">
+            <g class="feet" fill="#ff9a3c">
+              <ellipse cx="84" cy="190" rx="11" ry="5.5"/>
+              <ellipse cx="116" cy="190" rx="11" ry="5.5"/>
+            </g>
+
+            <g class="wing wing-l"><ellipse cx="40" cy="132" rx="16" ry="36" fill="url(#gWing)"/></g>
+            <g class="wing wing-r"><ellipse cx="160" cy="132" rx="16" ry="36" fill="url(#gWing)"/></g>
+
+            <path d="M60 72 L52 40 L82 62 Z" fill="url(#gBody)"/>
+            <path d="M140 72 L148 40 L118 62 Z" fill="url(#gBody)"/>
+
+            <ellipse cx="100" cy="122" rx="62" ry="66" fill="url(#gBody)"/>
+            <ellipse cx="100" cy="148" rx="38" ry="37" fill="#fbeaff"/>
+            <path d="M86 138 q5 5 10 0 M104 138 q5 5 10 0 M95 153 q5 5 10 0" fill="none" stroke="#e5b5f2" stroke-width="2.5" stroke-linecap="round"/>
+
+            <circle cx="78" cy="101" r="22" fill="#fbeaff"/>
+            <circle cx="122" cy="101" r="22" fill="#fbeaff"/>
+            <circle class="cheek" cx="62" cy="122" r="6" fill="#ff4fd0"/>
+            <circle class="cheek" cx="138" cy="122" r="6" fill="#ff4fd0"/>
+
+            <g class="eyes-closed" fill="none" stroke="#1b0b45" stroke-width="4" stroke-linecap="round">
+              <path d="M66 100 Q78 110 90 100"/>
+              <path d="M110 100 Q122 110 134 100"/>
+            </g>
+            <g class="eyes-open">
+              <circle cx="78" cy="101" r="11" fill="#1b0b45"/>
+              <circle cx="82" cy="96" r="3.6" fill="#fff"/>
+              <circle cx="74" cy="105" r="1.6" fill="#fff"/>
+              <circle cx="122" cy="101" r="11" fill="#1b0b45"/>
+              <circle cx="126" cy="96" r="3.6" fill="#fff"/>
+              <circle cx="118" cy="105" r="1.6" fill="#fff"/>
+            </g>
+            <g class="eyes-happy" fill="none" stroke="#1b0b45" stroke-width="4" stroke-linecap="round">
+              <path d="M66 105 Q78 91 90 105"/>
+              <path d="M110 105 Q122 91 134 105"/>
+            </g>
+            <g class="brows" fill="none" stroke="#1b0b45" stroke-width="4" stroke-linecap="round">
+              <path d="M62 85 L89 76"/>
+              <path d="M111 76 L138 85"/>
+            </g>
+
+            <path class="beak-closed" d="M91 114 L109 114 L100 128 Z" fill="#ff9a3c" stroke="#e57a1f" stroke-width="1.5" stroke-linejoin="round"/>
+            <g class="beak-open">
+              <ellipse cx="100" cy="124" rx="7.5" ry="7" fill="#6b1036"/>
+              <path d="M90 112 L110 112 L100 122 Z" fill="#ff9a3c" stroke="#e57a1f" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M94 127 Q100 135 106 127 Z" fill="#ff9a3c" stroke="#e57a1f" stroke-width="1.5" stroke-linejoin="round"/>
+            </g>
+
+            <path class="sweat" d="M44 74 C38 84 36 90 44 93 C52 90 50 84 44 74 Z" fill="#8ad8ff" stroke="#3f9fd8" stroke-width="1.5"/>
+
+            <g class="cap">
+              <path d="M52 74 C58 40 96 22 128 28 C154 33 170 56 174 86 C164 72 154 68 148 74 Z" fill="url(#gCap)"/>
+              <circle cx="88" cy="48" r="2.2" fill="#ffd76a"/>
+              <circle cx="116" cy="38" r="1.7" fill="#ffd76a"/>
+              <circle cx="140" cy="52" r="2.2" fill="#ffd76a"/>
+              <ellipse cx="100" cy="74" rx="52" ry="9" fill="#f3eaff"/>
+              <circle cx="174" cy="88" r="9" fill="#f3eaff"/>
+            </g>
+          </g>
+
+          <g class="zzz">
+            <text class="z z1" x="40" y="52" font-size="20">Z</text>
+            <text class="z z2" x="24" y="32" font-size="15">Z</text>
+            <text class="z z3" x="12" y="16" font-size="11">Z</text>
+          </g>
+        </svg>
+      </button>
+
+      <p id="bubble" class="bubble" aria-live="polite">نومان نايم… اضغط عليه عشان يصحى</p>
+
+      <div class="owl-actions">
+        <button id="suggestBtn" class="btn btn-primary" type="button">وش أبدأ فيه؟</button>
+        <button id="focusBtn" class="btn btn-ghost" type="button">تركيز 25 دقيقة</button>
+        <button id="sleepBtn" class="btn btn-ghost" type="button">نوّمه</button>
+      </div>
+
+      <div id="focusPanel" class="focus" hidden>
+        <p class="focus-label" id="focusLabel">جلسة تركيز</p>
+        <p id="focusTime" class="focus-time" role="timer" aria-labelledby="focusLabel">25:00</p>
+        <div class="focus-bar" aria-hidden="true"><span id="focusBar"></span></div>
+        <div class="owl-actions">
+          <button id="focusPause" class="btn btn-ghost" type="button">إيقاف مؤقت</button>
+          <button id="focusStop" class="btn btn-ghost" type="button">إنهاء</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="addTitle">
+      <h2 id="addTitle" class="section-title">مهمة جديدة</h2>
+      <form id="addForm" class="add-form" novalidate autocomplete="off">
+        <div class="add-row">
+          <label class="sr-only" for="taskTitle">عنوان المهمة</label>
+          <input id="taskTitle" class="input" type="text" maxlength="120" placeholder="وش عندك تسويه؟" enterkeyhint="done">
+          <button class="btn btn-primary" type="submit">أضف</button>
+        </div>
+        <p id="addError" class="form-error" role="alert" hidden></p>
+
+        <div class="add-meta">
+          <label class="field" for="taskCategory">
+            <span class="field-label">الفئة</span>
+            <select id="taskCategory" class="input">
+              <option value="scripts">سكريبتات</option>
+              <option value="design">تصميم</option>
+              <option value="store">المتجر</option>
+              <option value="comms">تواصل</option>
+              <option value="other">أخرى</option>
+            </select>
+          </label>
+          <div class="field">
+            <label class="field-label" for="taskDue">الموعد</label>
+            <input id="taskDue" class="input" type="date">
+            <div class="quick-dates" role="group" aria-label="مواعيد سريعة">
+              <button type="button" class="chip-btn" data-due="today">اليوم</button>
+              <button type="button" class="chip-btn" data-due="tomorrow">بكرة</button>
+              <button type="button" class="chip-btn" data-due="none">بدون موعد</button>
+            </div>
+          </div>
+        </div>
+
+        <fieldset class="field prio-field">
+          <legend class="field-label">الأولوية</legend>
+          <div class="segmented">
+            <input type="radio" name="priority" id="prioUrgent" value="urgent">
+            <label for="prioUrgent">عاجلة</label>
+            <input type="radio" name="priority" id="prioNormal" value="normal" checked>
+            <label for="prioNormal">عادية</label>
+            <input type="radio" name="priority" id="prioLight" value="light">
+            <label for="prioLight">خفيفة</label>
+          </div>
+        </fieldset>
+      </form>
+    </section>
+
+    <section class="card" aria-label="المهام">
+      <div class="tabs" role="tablist" aria-label="عرض المهام">
+        <button id="tab-today" class="tab" type="button" role="tab" data-tab="today" aria-selected="true" aria-controls="taskPanel">
+          اليوم <span class="count" id="count-today">0</span>
+        </button>
+        <button id="tab-upcoming" class="tab" type="button" role="tab" data-tab="upcoming" aria-selected="false" aria-controls="taskPanel" tabindex="-1">
+          القادمة <span class="count" id="count-upcoming">0</span>
+        </button>
+        <button id="tab-done" class="tab" type="button" role="tab" data-tab="done" aria-selected="false" aria-controls="taskPanel" tabindex="-1">
+          المنجزة <span class="count" id="count-done">0</span>
+        </button>
+      </div>
+      <div id="taskPanel" class="task-panel" role="tabpanel" aria-labelledby="tab-today">
+        <ul id="taskList" class="task-list"></ul>
+        <p id="emptyState" class="empty" hidden></p>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="dataTitle">
+      <h2 id="dataTitle" class="section-title">بياناتك</h2>
+      <p class="muted">كل شي محفوظ في هذا المتصفح بس. صدّر نسخة احتياطية بين فترة وفترة.</p>
+      <div class="data-actions">
+        <button id="exportBtn" class="btn btn-ghost" type="button">تصدير</button>
+        <button id="importBtn" class="btn btn-ghost" type="button">استيراد</button>
+        <input id="importFile" type="file" accept=".json,application/json" hidden>
+      </div>
+      <div id="importConfirm" class="confirm" hidden>
+        <p id="importConfirmText"></p>
+        <div class="data-actions">
+          <button id="importYes" class="btn btn-danger" type="button">استبدل بياناتي</button>
+          <button id="importNo" class="btn btn-ghost" type="button">إلغاء</button>
+        </div>
+      </div>
+      <p id="dataStatus" class="status" role="status"></p>
+    </section>
+  </div>
+
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
