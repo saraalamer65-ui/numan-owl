@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>نومان</title>
+  <meta name="description" content="نومان: لوحة متابعة مهام مع بومة لطيفة تصحى وتشجعك">
+  <meta name="theme-color" content="#0b0536">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <h1>نومان</h1>
+        <p class="tagline">بومتك اللي تتابع مهامك</p>
+      </div>
+      <div class="top-actions">
+        <button id="themeBtn" class="icon-btn" type="button" aria-label="تبديل المظهر">
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="stage" aria-label="نومان البومة">
+      <button id="owlBtn" class="owl-btn" type="button" data-state="sleeping" aria-label="نومان نايم، اضغط عشان يصحى">
+        <svg class="owl" viewBox="0 0 200 210" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="gBody" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#7b2ff7"/>
+              <stop offset="1" stop-color="#ff4fd0"/>
+            </linearGradient>
+            <linearGradient id="gWing" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5f1fd6"/>
+              <stop offset="1" stop-color="#d23bc8"/>
+            </linearGradient>
+            <linearGradient id="gCap" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2a1a86"/>
+              <stop offset="1" stop-color="#4b2cc0"/>
+            </linearGradient>
+          </defs>
+
+          <g class="branch">
+            <path d="M6 197 Q100 186 194 199" fill="none" stroke="#8a5a3c" stroke-width="9" stroke-linecap="round"/>
+            <ellipse cx="172" cy="188" rx="10" ry="5" fill="#5fbf8f" transform="rotate(-25 172 188)"/>
+          </g>
+
+          <g class="owl-body">
+            <g class="feet" fill="#ff9a3c">
+              <ellipse cx="84" cy="190" rx="11" ry="5.5"/>
+              <ellipse cx="116" cy="190" rx="11" ry="5.5"/>
+            </g>
+
+            <g class="wing wing-l"><ellipse cx="40" cy="132" rx="16" ry="36" fill="url(#gWing)"/></g>
+            <g class="wing wing-r"><ellipse cx="160" cy="132" rx="16" ry="36" fill="url(#gWing)"/></g>
+
+            <path d="M60 72 L52 40 L82 62 Z" fill="url(#gBody)"/>
+            <path d="M140 72 L148 40 L118 62 Z" fill="url(#gBody)"/>
+
+            <ellipse cx="100" cy="122" rx="62" ry="66" fill="url(#gBody)"/>
+            <ellipse cx="100" cy="148" rx="38" ry="37" fill="#fbeaff"/>
+            <path d="M86 138 q5 5 10 0 M104 138 q5 5 10 0 M95 153 q5 5 10 0" fill="none" stroke="#e5b5f2" stroke-width="2.5" stroke-linecap="round"/>
+
+            <circle cx="78" cy="101" r="22" fill="#fbeaff"/>
+            <circle cx="122" cy="101" r="22" fill="#fbeaff"/>
+            <circle class="cheek" cx="62" cy="122" r="6" fill="#ff4fd0"/>
+            <circle class="cheek" cx="138" cy="122" r="6" fill="#ff4fd0"/>
+
+            <g class="eyes-closed" fill="none" stroke="#1b0b45" stroke-width="4" stroke-linecap="round">
+              <path d="M66 100 Q78 110 90 100"/>
+              <path d="M110 100 Q122 110 134 100"/>
+            </g>
+            <g class="eyes-open">
+              <circle cx="78" cy="101" r="11" fill="#1b0b45"/>
+              <circle cx="82" cy="96" r="3.6" fill="#fff"/>
+              <circle cx="74" cy="105" r="1.6" fill="#fff"/>
+              <circle cx="122" cy="101" r="11" fill="#1b0b45"/>
+              <circle cx="126" cy="96" r="3.6" fill="#fff"/>
+              <circle cx="118" cy="105" r="1.6" fill="#fff"/>
+            </g>
+            <g class="eyes-happy" fill="none" stroke="#1b0b45" stroke-width="4" stroke-linecap="round">
+              <path d="M66 105 Q78 91 90 105"/>
+              <path d="M110 105 Q122 91 134 105"/>
+            </g>
+            <g class="brows" fill="none" stroke="#1b0b45" stroke-width="4" stroke-linecap="round">
+              <path d="M62 85 L89 76"/>
+              <path d="M111 76 L138 85"/>
+            </g>
+
+            <path class="beak-closed" d="M91 114 L109 114 L100 128 Z" fill="#ff9a3c" stroke="#e57a1f" stroke-width="1.5" stroke-linejoin="round"/>
+            <g class="beak-open">
+              <ellipse cx="100" cy="124" rx="7.5" ry="7" fill="#6b1036"/>
+              <path d="M90 112 L110 112 L100 122 Z" fill="#ff9a3c" stroke="#e57a1f" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M94 127 Q100 135 106 127 Z" fill="#ff9a3c" stroke="#e57a1f" stroke-width="1.5" stroke-linejoin="round"/>
+            </g>
+
+            <path class="sweat" d="M44 74 C38 84 36 90 44 93 C52 90 50 84 44 74 Z" fill="#8ad8ff" stroke="#3f9fd8" stroke-width="1.5"/>
+
+            <g class="cap">
+              <path d="M52 74 C58 40 96 22 128 28 C154 33 170 56 174 86 C164 72 154 68 148 74 Z" fill="url(#gCap)"/>
+              <circle cx="88" cy="48" r="2.2" fill="#ffd76a"/>
+              <circle cx="116" cy="38" r="1.7" fill="#ffd76a"/>
+              <circle cx="140" cy="52" r="2.2" fill="#ffd76a"/>
+              <ellipse cx="100" cy="74" rx="52" ry="9" fill="#f3eaff"/>
+              <circle cx="174" cy="88" r="9" fill="#f3eaff"/>
+            </g>
+          </g>
+
+          <g class="zzz">
+            <text class="z z1" x="40" y="52" font-size="20">Z</text>
+            <text class="z z2" x="24" y="32" font-size="15">Z</text>
+            <text class="z z3" x="12" y="16" font-size="11">Z</text>
+          </g>
+        </svg>
+      </button>
+
+      <p id="bubble" class="bubble" aria-live="polite">نومان نايم… اضغط عليه عشان يصحى</p>
+
+      <div class="owl-actions">
+        <button id="sleepBtn" class="btn btn-ghost" type="button">نوّمه</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
