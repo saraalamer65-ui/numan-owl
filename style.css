@@ -637,6 +637,44 @@ select.input { padding-inline-end: 10px; }
   .confetti { display: none; }
 }
 
+/* ---------- Focus timer ---------- */
+.focus {
+  inline-size: 100%;
+  padding: 14px;
+  border-radius: var(--r);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.focus-label { margin: 0; color: var(--muted); font-weight: 700; font-size: 0.95rem; }
+.focus-time {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  color: var(--fg);
+}
+.focus.paused .focus-time { color: var(--muted); }
+.focus-bar {
+  inline-size: 100%;
+  block-size: 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.focus-bar span {
+  display: block;
+  block-size: 100%;
+  inline-size: 0;
+  border-radius: inherit;
+  background: var(--btn-grad);
+}
+
 @media (max-width: 400px) {
   .stat-label { display: none; }
   .top-actions { flex-wrap: nowrap; }

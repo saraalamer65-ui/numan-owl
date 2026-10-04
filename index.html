@@ -132,7 +132,18 @@
 
       <div class="owl-actions">
         <button id="suggestBtn" class="btn btn-primary" type="button">وش أبدأ فيه؟</button>
+        <button id="focusBtn" class="btn btn-ghost" type="button">تركيز 25 دقيقة</button>
         <button id="sleepBtn" class="btn btn-ghost" type="button">نوّمه</button>
+      </div>
+
+      <div id="focusPanel" class="focus" hidden>
+        <p class="focus-label" id="focusLabel">جلسة تركيز</p>
+        <p id="focusTime" class="focus-time" role="timer" aria-labelledby="focusLabel">25:00</p>
+        <div class="focus-bar" aria-hidden="true"><span id="focusBar"></span></div>
+        <div class="owl-actions">
+          <button id="focusPause" class="btn btn-ghost" type="button">إيقاف مؤقت</button>
+          <button id="focusStop" class="btn btn-ghost" type="button">إنهاء</button>
+        </div>
       </div>
     </section>
 

@@ -862,9 +862,172 @@
     importBtn.focus();
   });
 
+  // ---------- Focus timer ----------
+  // Time is derived from Date.now(), so throttled background tabs stay accurate.
+  const FOCUS_MS = 25 * 60 * 1000;
+  const FOCUS_KEY = 'numan.focus';
+  const FOCUS_POINTS = 20;
+  const focusBtn = $('#focusBtn');
+  const focusPanel = $('#focusPanel');
+  const focusTime = $('#focusTime');
+  const focusBar = $('#focusBar');
+  const focusPause = $('#focusPause');
+  const baseTitle = document.title;
+
+  // { endAt, pausedLeft, cheered } — endAt is used while running, pausedLeft while paused.
+  let focus = null;
+  let focusTimer = 0;
+
+  const FOCUS_CHEERS = [
+    (left) => `كمّل يا بطل، باقي ${left}!`,
+    (left) => `كفو! ${left} وتخلص`,
+    (left) => `ركّز ركّز… باقي ${left}`,
+    (left) => `أنا هنا أراقب، باقي ${left}`,
+    (left) => `لا تتشتت! باقي ${left} بس`,
+  ];
+
+  function countMinutes(n) {
+    if (n === 1) return 'دقيقة';
+    if (n === 2) return 'دقيقتين';
+    if (n <= 10) return `${n} دقائق`;
+    return `${n} دقيقة`;
+  }
+
+  function saveFocus() {
+    try {
+      if (focus) localStorage.setItem(FOCUS_KEY, JSON.stringify(focus));
+      else localStorage.removeItem(FOCUS_KEY);
+    } catch (e) {
+      // Without storage the session just won't survive a reload.
+    }
+  }
+
+  function loadFocus() {
+    try {
+      const f = JSON.parse(localStorage.getItem(FOCUS_KEY) || 'null');
+      if (!f || typeof f !== 'object' || !Number.isInteger(f.cheered)) return null;
+      if (typeof f.pausedLeft === 'number' && f.pausedLeft > 0 && f.pausedLeft <= FOCUS_MS) return f;
+      if (typeof f.endAt === 'number' && f.endAt - Date.now() <= FOCUS_MS) return f;
+    } catch (e) {
+      // Ignore unreadable data.
+    }
+    return null;
+  }
+
+  const isPaused = () => focus && typeof focus.pausedLeft === 'number';
+  const timeLeft = () => (isPaused() ? focus.pausedLeft : focus.endAt - Date.now());
+
+  function formatClock(ms) {
+    const total = Math.max(0, Math.ceil(ms / 1000));
+    return `${pad(Math.floor(total / 60))}:${pad(total % 60)}`;
+  }
+
+  function showFocus() {
+    const active = Boolean(focus);
+    focusPanel.hidden = !active;
+    focusBtn.hidden = active;
+    if (!active) {
+      document.title = baseTitle;
+      return;
+    }
+    const paused = isPaused();
+    focusPanel.classList.toggle('paused', paused);
+    focusPause.textContent = paused ? 'استئناف' : 'إيقاف مؤقت';
+    const left = timeLeft();
+    focusTime.textContent = formatClock(left);
+    focusBar.style.inlineSize = `${Math.min(100, ((FOCUS_MS - left) / FOCUS_MS) * 100)}%`;
+    document.title = `${paused ? '⏸ ' : ''}${formatClock(left)} · ${baseTitle}`;
+  }
+
+  function tick() {
+    if (!focus) return;
+    const left = timeLeft();
+    if (left <= 0) {
+      finishFocus();
+      return;
+    }
+    // One cheer per finished minute; after a long background gap, just the latest one.
+    const minutesDone = Math.floor((FOCUS_MS - left) / 60000);
+    if (!isPaused() && minutesDone > focus.cheered) {
+      focus.cheered = minutesDone;
+      saveFocus();
+      if (owlState !== 'sleeping') say(pick(FOCUS_CHEERS)(countMinutes(Math.ceil(left / 60000))));
+    }
+    showFocus();
+  }
+
+  function runTicker() {
+    clearInterval(focusTimer);
+    focusTimer = setInterval(tick, 250);
+  }
+
+  function startFocus() {
+    focus = { endAt: Date.now() + FOCUS_MS, pausedLeft: null, cheered: 0 };
+    saveFocus();
+    if (owlState === 'sleeping') {
+      setOwl('awake');
+      stretch();
+    }
+    say('يلا! 25 دقيقة تركيز، وأنا أشجعك كل دقيقة.');
+    runTicker();
+    showFocus();
+    focusPause.focus();
+  }
+
+  function togglePause() {
+    if (!focus) return;
+    if (isPaused()) {
+      focus.endAt = Date.now() + focus.pausedLeft;
+      focus.pausedLeft = null;
+      say('رجعنا! كمّل من حيث وقفت.');
+    } else {
+      focus.pausedLeft = Math.max(0, focus.endAt - Date.now());
+      focus.endAt = null;
+      say(`وقفة قصيرة… باقي ${countMinutes(Math.ceil(focus.pausedLeft / 60000))}.`);
+    }
+    saveFocus();
+    showFocus();
+  }
+
+  function endFocus() {
+    clearInterval(focusTimer);
+    focus = null;
+    saveFocus();
+    showFocus();
+  }
+
+  function stopFocus() {
+    endFocus();
+    say('وقفنا الجلسة. ما عليه، المرة الجاية نكملها!');
+    focusBtn.focus();
+  }
+
+  function finishFocus() {
+    endFocus();
+    addPoints(FOCUS_POINTS);
+    saveState();
+    renderStats();
+    celebrate(`خلصت 25 دقيقة تركيز! ${pick(CHEERS)} +${FOCUS_POINTS} نقطة.`);
+    focusBtn.focus();
+  }
+
+  focusBtn.addEventListener('click', startFocus);
+  focusPause.addEventListener('click', togglePause);
+  $('#focusStop').addEventListener('click', stopFocus);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) tick();
+  });
+
   // ---------- Start ----------
   applyTheme();
   setOwl('sleeping');
   render();
   if (firstRun) say('نومان نايم… حطيت لك 4 مهام تجريبية تحت عشان تشوف الشكل. اضغط عليه يصحى');
+  focus = loadFocus();
+  if (focus) {
+    setOwl('awake');
+    runTicker();
+    tick();
+    if (focus) say(isPaused() ? 'جلسة التركيز موقفة، كمّلها لما تجهز.' : 'رجعت؟ جلسة التركيز ما زالت شغالة!');
+  }
 })();
