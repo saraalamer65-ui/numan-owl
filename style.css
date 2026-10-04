@@ -242,6 +242,7 @@ button, input, select { font: inherit; color: inherit; }
   border-radius: 3px;
 }
 .bubble.pop { animation: pop 0.35s ease; }
+.bubble { white-space: pre-line; }
 
 .owl-actions {
   display: flex;
@@ -581,4 +582,62 @@ select.input { padding-inline-end: 10px; }
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(255, 79, 208, 0); }
   50% { box-shadow: 0 0 0 6px rgba(255, 79, 208, 0.45); }
+}
+
+/* ---------- Stats ---------- */
+.stats { display: flex; gap: 6px; align-items: center; }
+.stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 40px;
+  padding-inline: 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+.stat svg { inline-size: 18px; block-size: 18px; flex: none; }
+#pointsStat svg { fill: #ffb92e; }
+#streakStat svg { fill: #ff6a3d; }
+.stat-label { color: var(--muted); font-size: 0.82rem; }
+.stat.bump { animation: bump 0.5s ease; }
+
+/* ---------- Confetti ---------- */
+.confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 50;
+}
+.confetti i {
+  position: absolute;
+  inset-block-start: -16px;
+  inline-size: 9px;
+  block-size: 14px;
+  border-radius: 2px;
+  background: var(--c);
+  animation: fall var(--d) cubic-bezier(0.25, 0.6, 0.5, 1) var(--delay) forwards;
+  opacity: 0;
+}
+.confetti i.round { border-radius: 50%; inline-size: 10px; block-size: 10px; }
+
+@keyframes fall {
+  0% { transform: translate(0, 0) rotate(0); opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translate(var(--drift), 105vh) rotate(var(--spin)); opacity: 0; }
+}
+@keyframes bump {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.18); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .confetti { display: none; }
+}
+
+@media (max-width: 400px) {
+  .stat-label { display: none; }
+  .top-actions { flex-wrap: nowrap; }
 }

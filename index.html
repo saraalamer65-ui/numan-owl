@@ -19,6 +19,16 @@
         <p class="tagline">بومتك اللي تتابع مهامك</p>
       </div>
       <div class="top-actions">
+        <div class="stats">
+          <span class="stat" id="pointsStat">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7Z"/></svg>
+            <b id="pointsValue">0</b><span class="stat-label">نقطة</span>
+          </span>
+          <span class="stat" id="streakStat">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5c.6 3.2 4.8 5.6 4.8 10.4A4.8 4.8 0 0 1 7.2 13c0-2 1-3.4 2.2-4.4.1 1.6.8 2.6 1.8 3.1C11.1 8.6 10.6 5.6 12 2.5Z"/></svg>
+            <b id="streakValue">0</b><span class="stat-label" id="streakLabel">يوم</span>
+          </span>
+        </div>
         <button id="themeBtn" class="icon-btn" type="button" aria-label="تبديل المظهر">
           <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
           <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
@@ -121,6 +131,7 @@
       <p id="bubble" class="bubble" aria-live="polite">نومان نايم… اضغط عليه عشان يصحى</p>
 
       <div class="owl-actions">
+        <button id="suggestBtn" class="btn btn-primary" type="button">وش أبدأ فيه؟</button>
         <button id="sleepBtn" class="btn btn-ghost" type="button">نوّمه</button>
       </div>
     </section>
@@ -207,6 +218,8 @@
       <p id="dataStatus" class="status" role="status"></p>
     </section>
   </div>
+
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
 
   <script src="app.js"></script>
 </body>

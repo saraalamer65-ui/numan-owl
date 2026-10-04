@@ -296,19 +296,42 @@
     return /[.!?؟…]$/.test(a) ? `${a} ${b}` : `${a}. ${b}`;
   }
 
+  const OVERDUE_LINES = [
+    (t, late) => `ترى «${t}» ${late}… يمديك تخلّصها الحين؟`,
+    (t, late) => `أحم أحم… «${t}» ${late}. أنا ما قلت شي بس`,
+    (t, late) => `«${t}» ${late} وتناظرك بعيون حزينة. نخلصها؟`,
+  ];
+
+  // Gentle nudge about the most pressing overdue task, or '' if none.
+  function overdueNudge() {
+    const today = todayKey();
+    const overdue = state.tasks.filter((t) => isOverdue(t, today)).sort((a, b) => compareTasks(a, b, today));
+    if (!overdue.length) return '';
+    const first = overdue[0];
+    return pick(OVERDUE_LINES)(first.title, dueTag(first, today).text);
+  }
+
+  // Speak, and look worried for a moment if something is overdue.
+  function talk(opening) {
+    const nudge = overdueNudge();
+    say(joinLines(opening, todaySummary()) + (nudge ? `\n${nudge}` : ''));
+    clearTimeout(moodTimer);
+    if (nudge) {
+      // Let the wake-up stretch finish first.
+      moodTimer = setTimeout(() => showMood('worried', 3500), owlBtn.classList.contains('stretching') ? 1200 : 0);
+    }
+  }
+
   function wake() {
     clearTimeout(moodTimer);
     setOwl('awake');
     stretch();
-    say(joinLines(greeting(), todaySummary()));
+    talk(greeting());
   }
 
   owlBtn.addEventListener('click', () => {
-    if (owlState === 'sleeping') {
-      wake();
-    } else {
-      say(joinLines(pick(AWAKE_CHATTER), todaySummary()));
-    }
+    if (owlState === 'sleeping') wake();
+    else talk(pick(AWAKE_CHATTER));
   });
 
   sleepBtn.addEventListener('click', () => {
@@ -462,6 +485,7 @@
     taskList.replaceChildren(...list.map((t) => renderTask(t, today)));
     emptyState.textContent = EMPTY_TEXT[activeTab];
     emptyState.hidden = list.length > 0;
+    renderStats();
   }
 
   function setTab(name, focus) {
@@ -505,10 +529,124 @@
     setTimeout(() => el.classList.remove('pulse'), 2800);
   }
 
-  // Called after a task is marked done.
-  function onTaskCompleted(task) {
-    say(`تم! «${task.title}» صارت في المنجزة.`);
+  // ---------- Celebration, points, streak ----------
+  const pointsValue = $('#pointsValue');
+  const streakValue = $('#streakValue');
+  const streakLabel = $('#streakLabel');
+  const pointsStat = $('#pointsStat');
+  const streakStat = $('#streakStat');
+  const confettiLayer = $('#confetti');
+
+  const CHEERS = ['يا سلام عليك!', 'كفو!', 'بطل والله!', 'ما شاء الله عليك!', 'كذا الشغل ولا بلاش!', 'أسطورة!'];
+  const CONFETTI_COLORS = ['#ff4fd0', '#7b2ff7', '#ffd76a', '#ff9a3c', '#4f8cff', '#2fbf8f'];
+
+  // The streak only counts if the last completion was today or yesterday.
+  function currentStreak() {
+    const today = todayKey();
+    const last = state.lastDoneDay;
+    return last === today || last === addDays(today, -1) ? state.streak : 0;
   }
+
+  function renderStats() {
+    pointsValue.textContent = state.points;
+    const streak = currentStreak();
+    streakValue.textContent = streak;
+    streakLabel.textContent = streak === 2 ? 'يومين' : streak >= 3 && streak <= 10 ? 'أيام' : 'يوم';
+    pointsStat.setAttribute('aria-label', `النقاط: ${state.points}`);
+    pointsStat.title = 'النقاط';
+    streakStat.setAttribute('aria-label', `أيام متتالية: ${streak}`);
+    streakStat.title = 'أيام متتالية فيها إنجاز';
+  }
+
+  function bump(el) {
+    el.classList.remove('bump');
+    void el.offsetWidth;
+    el.classList.add('bump');
+  }
+
+  function addPoints(n) {
+    state.points += n;
+    bump(pointsStat);
+  }
+
+  function updateStreak() {
+    const today = todayKey();
+    if (state.lastDoneDay === today) return;
+    state.streak = state.lastDoneDay === addDays(today, -1) ? state.streak + 1 : 1;
+    state.lastDoneDay = today;
+    bump(streakStat);
+  }
+
+  function confetti() {
+    if (reduceMotion.matches) return;
+    const pieces = [];
+    for (let i = 0; i < 48; i++) {
+      const el = document.createElement('i');
+      if (i % 3 === 0) el.className = 'round';
+      el.style.left = `${Math.random() * 100}%`;
+      el.style.setProperty('--c', CONFETTI_COLORS[i % CONFETTI_COLORS.length]);
+      el.style.setProperty('--d', `${1.6 + Math.random() * 1.4}s`);
+      el.style.setProperty('--delay', `${Math.random() * 0.35}s`);
+      el.style.setProperty('--drift', `${(Math.random() - 0.5) * 160}px`);
+      el.style.setProperty('--spin', `${(Math.random() - 0.5) * 1080}deg`);
+      pieces.push(el);
+    }
+    confettiLayer.append(...pieces);
+    setTimeout(() => pieces.forEach((el) => el.remove()), 3600);
+  }
+
+  // Happy owl + confetti + a cheer line.
+  function celebrate(line) {
+    owlBtn.classList.remove('stretching');
+    showMood('happy', 2800);
+    confetti();
+    say(line);
+  }
+
+  // Called after a task is marked done. Points are awarded once per task.
+  function onTaskCompleted(task) {
+    updateStreak();
+    let line = pick(CHEERS);
+    if (!task.awarded) {
+      const pts = task.priority === 'urgent' ? 15 : 10;
+      task.awarded = true;
+      addPoints(pts);
+      line += ` +${pts === 10 ? '10 نقاط' : `${pts} نقطة`} على «${task.title}».`;
+    } else {
+      line += ` «${task.title}» خلصت (نقاطها محسوبة من قبل).`;
+    }
+    saveState();
+    renderStats();
+    celebrate(line);
+  }
+
+  // ---------- "What should I start with?" ----------
+  function suggestReason(t, today) {
+    if (isOverdue(t, today)) return 'لأنها متأخرة';
+    if (t.priority === 'urgent') return 'لأنها عاجلة';
+    if (t.due === today) return 'لأن موعدها اليوم';
+    if (t.due) return 'لأنها الأقرب موعدًا';
+    return 'لأنها أول شي في قائمتك';
+  }
+
+  $('#suggestBtn').addEventListener('click', () => {
+    const today = todayKey();
+    const open = state.tasks.filter((t) => !t.done).sort((a, b) => compareTasks(a, b, today));
+    if (owlState === 'sleeping') {
+      setOwl('awake');
+      stretch();
+    }
+    if (!open.length) {
+      showMood('happy', 2000);
+      say('ما عندك شي مفتوح! أضف مهمة أو خذ لك قهوة.');
+      return;
+    }
+    const top = open[0];
+    const tab = top.due && top.due > today ? 'upcoming' : 'today';
+    if (tab !== activeTab) setTab(tab, false);
+    pulseTask(top.id);
+    say(`ابدأ بـ«${top.title}»، ${suggestReason(top, today)}. أنا معك!`);
+  });
 
   function completeTask(task) {
     task.done = true;
